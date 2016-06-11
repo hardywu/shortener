@@ -4,29 +4,40 @@
 
   class MainController {
 
-    constructor($http) {
+    constructor($http, $scope, $location) {
       this.$http = $http;
-      this.awesomeThings = [];
+      this.$scope = $scope;
+      this.host = $location.host();
+      if ($location.port() != 80) {
+        this.host + ':' + $location.port();
+      }
+      this.shorters = [];
+      this.newUrl = '';
     }
 
     $onInit() {
-      this.$http.get('/api/things')
+      this.$http.get('/api/shorters')
         .then(response => {
-          this.awesomeThings = response.data;
+          this.shorters = response.data;
         });
     }
 
     addThing() {
-      if (this.newThing) {
-        this.$http.post('/api/things', {
-          name: this.newThing
+      const that = this;
+      if (that.newUrl) {
+        that.$http.post('/api/shorters', {
+          'origin': that.newUrl
+        }).then((res) => {
+          if (!_.find(that.shorters, { _id: res.data._id })) {
+            that.shorters.unshift(res.data);
+          }
+          that.newUrl = '';
         });
-        this.newThing = '';
       }
     }
 
-    deleteThing(thing) {
-      this.$http.delete('/api/things/' + thing._id);
+    deleteThing(shorter) {
+      this.$http.delete('/api/shorters/' + shorter._id);
     }
   }
 
