@@ -14,8 +14,8 @@ describe('Component: mainComponent', function() {
   // Initialize the controller and a mock scope
   beforeEach(inject(function(_$httpBackend_, $http, $componentController, $rootScope, $state) {
     $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/shorters');
-      .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
+    $httpBackend.expectGET('/api/shorters')
+      .respond([{ origin: 'http://mock.link/url', token: 'nf3cS' }]);
     scope = $rootScope.$new();
     state = $state;
     mainComponent = $componentController('main', {
