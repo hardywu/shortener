@@ -4,6 +4,31 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 
 ## Getting Started
 
+It is a simple example that how to create short urls. The idea is that we can
+sign each url an auto increment sequential number in the 0-9A-Za-z base format.
+The resulting short urls are just encoded integers. When an user visits a short
+url, the server end of this app will look up the record from MongoDB and
+redirect the user to the corresponding url.
+
+### DB Schema
+
+There are only two Collections: Shorter and ShorterCounter.
+
+Shorter has two uniquely indexed attributes:
+
+* origin: the original long url
+* token: the token part of the short url
+
+ShorterCounter has only one document with only one attribute:
+
+* seq: keep track of the count of shorters
+
+### API
+
+* `/api/shorters`: the standard CRUD interface
+* `/:token`: look up the short url in the record and redirect if found one
+* `/*`: serving the static front end files
+
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
@@ -24,7 +49,7 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 
 ## Build & development
 
-Run `grunt build` for building and `grunt serve` for preview.
+Run `gulp build` for building and `gulp serve` for preview.
 
 ## Testing
 
