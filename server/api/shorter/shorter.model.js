@@ -21,10 +21,12 @@ ShorterSchema.pre('save', function (next) {
     { $inc: { seq: 1 } },
     { upsert: true, new: true },
     function(error, count) {
-      if (error)
-        return next(error);
-      doc.token = toBase62(count.seq);
-      next();
+      if (error) {
+        next(error);
+      } else {
+        doc.token = toBase62(count.seq);
+        next();
+      }
     }
   );
 });

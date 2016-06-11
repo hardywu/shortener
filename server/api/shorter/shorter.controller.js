@@ -21,6 +21,15 @@ function respondWithResult(res, statusCode) {
   };
 }
 
+function createIfNotFound(data) {
+  return function(entity) {
+    if (!entity) {
+      return Shorter.create({ origin: data.origin })
+    }
+    return entity;
+  };
+}
+
 function saveUpdates(updates) {
   return function(entity) {
     var updated = _.merge(entity, updates);
@@ -55,6 +64,7 @@ function handleEntityNotFound(res) {
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
+    console.log('err', err);
     res.status(statusCode).send(err);
   };
 }
@@ -76,12 +86,8 @@ export function show(req, res) {
 
 // Creates a new Shorter in the DB
 export function create(req, res) {
-  return Shorter.findOneAndUpdate(
-      { origin: req.body.origin },
-      { $setOnInsert: { origin: req.body.origin } },
-      { new: true, upsert: true }
-    )
-    .exec()
+  return Shorter.findOne({ origin: req.body.origin }).exec()
+    .then(createIfNotFound(req.body))
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
