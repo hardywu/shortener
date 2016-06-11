@@ -10,6 +10,10 @@ The resulting short urls are just encoded integers. When an user visits a short
 url, the server end of this app will look up the record from MongoDB and
 redirect the user to the corresponding url.
 
+### Demo
+
+[Heroku](https://sortnr.herokuapp.com)
+
 ### DB Schema
 
 There are only two Collections: Shorter and ShorterCounter.
@@ -25,7 +29,8 @@ ShorterCounter has only one document with only one attribute:
 
 ### API
 
-* `/api/shorters`: the standard CRUD interface
+* `/api/shorters`: the standard CRUD interface. Creating the same origin urls, will
+always return the same record.
 * `/:token`: look up the short url in the record and redirect if found one
 * `/*`: serving the static front end files
 

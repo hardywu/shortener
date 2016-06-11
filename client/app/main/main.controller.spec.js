@@ -12,7 +12,7 @@ describe('Component: mainComponent', function() {
   var $httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function(_$httpBackend_, $http, $componentController, $rootScope, $state) {
+  beforeEach(inject(function(_$httpBackend_, $http, $componentController, $rootScope, $state, $location) {
     $httpBackend = _$httpBackend_;
     $httpBackend.expectGET('/api/shorters')
       .respond([{ origin: 'http://mock.link/url', token: 'nf3cS' }]);
@@ -20,7 +20,8 @@ describe('Component: mainComponent', function() {
     state = $state;
     mainComponent = $componentController('main', {
       $http: $http,
-      $scope: scope
+      $scope: scope,
+      $location: $location
     });
   }));
 
