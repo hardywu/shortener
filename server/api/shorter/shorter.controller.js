@@ -71,7 +71,7 @@ function handleError(res, statusCode) {
 
 // Gets a list of Shorters
 export function index(req, res) {
-  return Shorter.find().sort({ createdAt: -1 }).exec()
+  return Shorter.find().limit(5).sort({ createdAt: -1 }).exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
