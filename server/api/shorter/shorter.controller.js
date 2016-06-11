@@ -1,16 +1,16 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/things              ->  index
- * POST    /api/things              ->  create
- * GET     /api/things/:id          ->  show
- * PUT     /api/things/:id          ->  update
- * DELETE  /api/things/:id          ->  destroy
+ * GET     /api/shorters              ->  index
+ * POST    /api/shorters              ->  create
+ * GET     /api/shorters/:id          ->  show
+ * PUT     /api/shorters/:id          ->  update
+ * DELETE  /api/shorters/:id          ->  destroy
  */
 
 'use strict';
 
 import _ from 'lodash';
-import Thing from './thing.model';
+import Shorter from './shorter.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -59,43 +59,48 @@ function handleError(res, statusCode) {
   };
 }
 
-// Gets a list of Things
+// Gets a list of Shorters
 export function index(req, res) {
-  return Thing.find().exec()
+  return Shorter.find().sort({ createdAt: -1 }).exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Gets a single Thing from the DB
+// Gets a single Shorter from the DB
 export function show(req, res) {
-  return Thing.findById(req.params.id).exec()
+  return Shorter.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Creates a new Thing in the DB
+// Creates a new Shorter in the DB
 export function create(req, res) {
-  return Thing.create(req.body)
+  return Shorter.findOneAndUpdate(
+      { origin: req.body.origin },
+      { $setOnInsert: { origin: req.body.origin } },
+      { new: true, upsert: true }
+    )
+    .exec()
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
 
-// Updates an existing Thing in the DB
+// Updates an existing Shorter in the DB
 export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  return Thing.findById(req.params.id).exec()
+  return Shorter.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(saveUpdates(req.body))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Deletes a Thing from the DB
+// Deletes a Shorter from the DB
 export function destroy(req, res) {
-  return Thing.findById(req.params.id).exec()
+  return Shorter.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));

@@ -3,40 +3,39 @@
 var app = require('../../../server');
 import request from 'supertest';
 
-var newThing;
+var newShorter;
 
-describe('Thing API:', function() {
+describe('Shorter API:', function() {
 
-  describe('GET /api/things', function() {
-    var things;
+  describe('GET /api/shorters', function() {
+    var shorters;
 
     beforeEach(function(done) {
       request(app)
-        .get('/api/things')
+        .get('/api/shorters')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) {
             return done(err);
           }
-          things = res.body;
+          shorters = res.body;
           done();
         });
     });
 
     it('should respond with JSON array', function() {
-      expect(things).to.be.instanceOf(Array);
+      expect(shorters).to.be.instanceOf(Array);
     });
 
   });
 
-  describe('POST /api/things', function() {
+  describe('POST /api/shorters', function() {
     beforeEach(function(done) {
       request(app)
-        .post('/api/things')
+        .post('/api/shorters')
         .send({
-          name: 'New Thing',
-          info: 'This is the brand new thing!!!'
+          origin: 'http://test.url/link'
         })
         .expect(201)
         .expect('Content-Type', /json/)
@@ -44,55 +43,52 @@ describe('Thing API:', function() {
           if (err) {
             return done(err);
           }
-          newThing = res.body;
+          newShorter = res.body;
           done();
         });
     });
 
-    it('should respond with the newly created thing', function() {
-      expect(newThing.name).to.equal('New Thing');
-      expect(newThing.info).to.equal('This is the brand new thing!!!');
+    it('should respond with the newly created shorter', function() {
+      expect(newShorter.origin).to.equal('http://test.url/link');
     });
 
   });
 
-  describe('GET /api/things/:id', function() {
-    var thing;
+  describe('GET /api/shorters/:id', function() {
+    var shorter;
 
     beforeEach(function(done) {
       request(app)
-        .get('/api/things/' + newThing._id)
+        .get('/api/shorters/' + newShorter._id)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) {
             return done(err);
           }
-          thing = res.body;
+          shorter = res.body;
           done();
         });
     });
 
     afterEach(function() {
-      thing = {};
+      shorter = {};
     });
 
-    it('should respond with the requested thing', function() {
-      expect(thing.name).to.equal('New Thing');
-      expect(thing.info).to.equal('This is the brand new thing!!!');
+    it('should respond with the requested shorter', function() {
+      expect(shorter.origin).to.equal('http://test.url/link');
     });
 
   });
 
-  describe('PUT /api/things/:id', function() {
-    var updatedThing;
+  describe('PUT /api/shorters/:id', function() {
+    var updatedShorter;
 
     beforeEach(function(done) {
       request(app)
-        .put('/api/things/' + newThing._id)
+        .put('/api/shorters/' + newShorter._id)
         .send({
-          name: 'Updated Thing',
-          info: 'This is the updated thing!!!'
+          origin: 'http://updated.test.url/link'
         })
         .expect(200)
         .expect('Content-Type', /json/)
@@ -100,27 +96,26 @@ describe('Thing API:', function() {
           if (err) {
             return done(err);
           }
-          updatedThing = res.body;
+          updatedShorter = res.body;
           done();
         });
     });
 
     afterEach(function() {
-      updatedThing = {};
+      updatedShorter = {};
     });
 
-    it('should respond with the updated thing', function() {
-      expect(updatedThing.name).to.equal('Updated Thing');
-      expect(updatedThing.info).to.equal('This is the updated thing!!!');
+    it('should respond with the updated shorter', function() {
+      expect(updatedShorter.origin).to.equal('http://updated.test.url/link');
     });
 
   });
 
-  describe('DELETE /api/things/:id', function() {
+  describe('DELETE /api/shorters/:id', function() {
 
     it('should respond with 204 on successful removal', function(done) {
       request(app)
-        .delete('/api/things/' + newThing._id)
+        .delete('/api/shorters/' + newShorter._id)
         .expect(204)
         .end((err, res) => {
           if (err) {
@@ -130,9 +125,9 @@ describe('Thing API:', function() {
         });
     });
 
-    it('should respond with 404 when thing does not exist', function(done) {
+    it('should respond with 404 when shorter does not exist', function(done) {
       request(app)
-        .delete('/api/things/' + newThing._id)
+        .delete('/api/shorters/' + newShorter._id)
         .expect(404)
         .end((err, res) => {
           if (err) {
