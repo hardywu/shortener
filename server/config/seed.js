@@ -4,37 +4,21 @@
  */
 
 'use strict';
-import Thing from '../api/thing/thing.model';
+import Shorter from '../api/shorter/shorter.model';
 
-Thing.find({}).remove()
+Shorter.find({}).remove()
   .then(() => {
-    Thing.create({
-      name: 'Development Tools',
-      info: 'Integration with popular tools such as Bower, Grunt, Babel, Karma, ' +
-             'Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, ' +
-             'Stylus, Sass, and Less.'
+    Shorter.create({
+      origin: 'http://test.url/link1',
     }, {
-      name: 'Server and Client integration',
-      info: 'Built with a powerful and fun stack: MongoDB, Express, ' +
-             'AngularJS, and Node.'
+      origin: 'http://test.url/link2',
     }, {
-      name: 'Smart Build System',
-      info: 'Build system ignores `spec` files, allowing you to keep ' +
-             'tests alongside code. Automatic injection of scripts and ' +
-             'styles into your index.html'
+      origin: 'http://test.url/link3',
     }, {
-      name: 'Modular Structure',
-      info: 'Best practice client and server structures allow for more ' +
-             'code reusability and maximum scalability'
+      origin: 'http://test.url/link4',
     }, {
-      name: 'Optimized Build',
-      info: 'Build process packs up your templates as a single JavaScript ' +
-             'payload, minifies your scripts/css/images, and rewrites asset ' +
-             'names for caching.'
+      origin: 'http://test.url/link5',
     }, {
-      name: 'Deployment Ready',
-      info: 'Easily deploy your app to Heroku or Openshift with the heroku ' +
-             'and openshift subgenerators'
+      origin: 'http://test.url/link6',
     });
   });
-
